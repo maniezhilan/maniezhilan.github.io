@@ -1,0 +1,13 @@
+---
+layout: post
+title: Skype in Ubuntu 9.10
+date: '2010-01-16T11:56:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- ubuntu
+modified_time: '2010-01-17T09:39:06.659-06:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-9036381142684583898
+blogger_orig_url: http://maniezhilan.blogspot.com/2010/01/skype-in-ubuntu-910.html
+---
+
+1.Download and install Skype from <a href="http://www.skype.com/intl/en/download/skype/linux/choose/"> their website</a>. I downloaded skype-ubuntu-intrepid_2.1.0.47-1_i386.deb for my 32 bit ubuntu 9.10<br /><br />2.Run  sudo dpkg -i skype-ubuntu-intrepid_2.1.0.47-1_i386.deb command on terminal<br /><br />3.If skype had no video , like mine did. Go Right click on the Ubuntu symbol on the left hand side of the screen. Select Internet then Skype , edit the command as follows.<br />env LD_PRELOAD=/usr/lib32/libv4l/v4l2convert.so skype. <br />While launching if it complains about missing lib32, change it to <br />env LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so skype.<br /><br />Now you should be able to launch the skype from menu Applications -> Internet -> Skype and do video chat.

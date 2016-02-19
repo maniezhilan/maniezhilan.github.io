@@ -1,0 +1,194 @@
+---
+layout: post
+title: Jersey Restful JPA toplink example using Maven and netbeans6.1
+date: '2008-09-21T08:17:00.000-05:00'
+author: Maniezhilan shanmugam
+tags:
+- jersey restful
+modified_time: '2012-09-01T20:01:48.920-05:00'
+thumbnail: http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZZjbpLvwI/AAAAAAAAAE8/EDZ106n0lsc/s72-c/Jersey1.png
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-6669993901988374608
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/09/jersey-restful-jpa-toplink-example.html
+---
+
+
+<br />I could have done the whole thing with the netbeans6.1 wizard for restful webservices , but it was too much of magic for me , so thought of going step by step myself for better understanding of the jersey and restful.
+<br />
+<br />I used netbeans6.1, JPA with toplink and mysql as my database.
+<br /><span style="font-weight:bold;"><br />Step 1</span>. Create a Maven project with netbeans(Make sure you the maven plugin is installed in netbeans).
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZZjbpLvwI/AAAAAAAAAE8/EDZ106n0lsc/s1600-h/Jersey1.png">
+    <img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZZjbpLvwI/AAAAAAAAAE8/EDZ106n0lsc/s400/Jersey1.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248480880997678850" />
+</a>
+<br />
+<br />
+<span style="font-weight:bold;">Step 2.</span> Select the Maven Webapp Archetype
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZbdVaXOxI/AAAAAAAAAFE/bXr4zW_rffE/s1600-h/Jersey2.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZbdVaXOxI/AAAAAAAAAFE/bXr4zW_rffE/s400/Jersey2.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248482975268944658" /></a>
+<br />
+<br /><span style="font-weight:bold;">Step 3.</span> Name your project (i named it as restMaven)
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZcD_5PVrI/AAAAAAAAAFM/ROLqo0ejRgI/s1600-h/Jersey3.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZcD_5PVrI/AAAAAAAAAFM/ROLqo0ejRgI/s400/Jersey3.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248483639507769010" /></a>
+<br />
+<br /><span style="font-weight:bold;">Step 4.</span> Click Finish and then open pom.xml from the project files folder, edit the pom.xml by adding the dependencies as shown.
+<br />
+<br />
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.mani</groupId>
+<artifactId>restMaven</artifactId>
+<packaging>war</packaging>
+<version>1.0-SNAPSHOT</version>
+<name>restMaven Maven Webapp</name>
+<url>http://maven.apache.org</url>
+<dependencies>
+<dependency>
+<groupId>jersey</groupId>
+<artifactId>jersey</artifactId>
+<version>0.5-ea</version>
+</dependency>
+<dependency>
+<groupId>javax.xml.bind</groupId>
+<artifactId>jaxb-api</artifactId>
+<version>2.1</version>
+</dependency>
+<dependency>
+<groupId>com.sun.xml.bind</groupId>
+<artifactId>jaxb-impl</artifactId>
+<version>2.0.3</version>
+</dependency>
+<dependency>
+<groupId>javax.annotation</groupId>
+<artifactId>jsr250-api</artifactId>
+<version>1.0</version>
+<scope>provided</scope>
+</dependency>
+<dependency>
+<groupId>javax.persistence</groupId>
+<artifactId>persistence-api</artifactId>
+<version>1.0.2</version>
+<scope>provided</scope>
+</dependency>
+<dependency>
+<groupId>javax.servlet</groupId>
+<artifactId>servlet-api</artifactId>
+<version>2.5</version>
+<scope>provided</scope>
+</dependency>
+<dependency>
+<groupId>asm</groupId>
+<artifactId>asm</artifactId>
+<version>3.1</version>
+</dependency>
+<dependency>
+<groupId>toplink.essentials</groupId>
+<artifactId>toplink-essentials-agent</artifactId>
+<version>2.0-36</version>
+</dependency>
+<dependency>
+<groupId>toplink.essentials</groupId>
+<artifactId>toplink-essentials</artifactId>
+<version>2.0-36</version>
+</dependency>
+</dependencies>
+<repositories>
+<repository>
+<id>javamaven2</id>
+<name>Repository for Maven2</name>
+<url>http://download.java.net/maven/2/</url>
+</repository>
+<repository>
+<id>toplink</id>
+<name>Repository for library Library[toplink]</name>
+<url>http://download.java.net/maven/1</url>
+<layout>legacy</layout>
+</repository>
+</repositories>
+<build>
+<finalName>restMaven</finalName>
+<plugins>
+<plugin>
+<artifactId>maven-compiler-plugin</artifactId>
+<version>2.0.2</version>
+<configuration>
+<source>1.5</source>
+<target>1.5</target>
+</configuration>
+</plugin>
+</plugins>
+</build>
+</project>
+{% endhighlight %}
+
+<br />
+<br /><span style="font-weight:bold;">Step 5.</span> Right click on project and do clean and build , maven will download and build will be successful.
+<br />
+<br /><span style="font-weight:bold;">Step 6.</span> Edit the web.xml as follows , the servlet adaptor from previous release is removed and you no longer need to register your resource classes. The only thing you have to make sure is , mention the right package where your resource classes are (i put them under package called service).
+{% highlight xml %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+<servlet>
+<servlet-name>Jersey</servlet-name>
+<servlet-class>com.sun.ws.rest.spi.container.servlet.ServletContainer</servlet-class>
+<init-param>
+<param-name>com.sun.ws.rest.config.property.resourceConfigClass</param-name>
+<param-value>com.sun.ws.rest.api.core.PackagesResourceConfig</param-value>
+</init-param>
+<init-param>
+<param-name>com.sun.ws.rest.config.property.packages</param-name>
+<param-value>service</param-value>
+</init-param>
+<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+<servlet-name>Jersey</servlet-name>
+<url-pattern>/*</url-pattern>
+</servlet-mapping>
+</web-app>
+{% endhighlight %}
+<br /><span style="font-weight:bold;">Step 7.</span>Create Persistence unit for accessing the db.
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZg0tyknwI/AAAAAAAAAFk/ihDMJzpPxWQ/s1600-h/Jersey7.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZg0tyknwI/AAAAAAAAAFk/ihDMJzpPxWQ/s400/Jersey7.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248488874508066562" /></a>
+<br /><span style="font-weight:bold;"><br />Step 8.</span> Leave the default toplink persistence library, give the db connection , i used mysql, also make sure u placed the mysql jdbc jar under server lib in tomcat.
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZhbG-OnbI/AAAAAAAAAFs/suTegChBUCM/s1600-h/Jersey8.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZhbG-OnbI/AAAAAAAAAFs/suTegChBUCM/s400/Jersey8.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248489534102871474" /></a>
+<br /><span style="font-weight:bold;"><br />Step 9.</span> Create Entity Classes from Database as shown.
+<br />
+<br />
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZidkLadUI/AAAAAAAAAF8/4LwKWrVHmbY/s1600-h/Jersey9.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZidkLadUI/AAAAAAAAAF8/4LwKWrVHmbY/s400/Jersey9.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248490675814167874" /></a>
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZiKXP5lQI/AAAAAAAAAF0/abPwBtiphTQ/s1600-h/Jersey10.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZiKXP5lQI/AAAAAAAAAF0/abPwBtiphTQ/s400/Jersey10.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248490345925809410" /></a>
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZixiDkTQI/AAAAAAAAAGE/pTP1uNchvbs/s1600-h/Jersey11.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_R3kI3TBVMhs/SNZixiDkTQI/AAAAAAAAAGE/pTP1uNchvbs/s400/Jersey11.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248491018841771266" /></a>
+<br />
+<br /><span style="font-weight:bold;">Step 10.</span> The generated person entity looks as follows
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_R3kI3TBVMhs/SNZjgqj5xPI/AAAAAAAAAGM/Tk8DPeJikFg/s1600-h/Jersey13.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_R3kI3TBVMhs/SNZjgqj5xPI/AAAAAAAAAGM/Tk8DPeJikFg/s400/Jersey13.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248491828578731250" /></a>
+<br /><span style="font-weight:bold;"><br />Step 11.</span> Create a new package for your resource class i named it service.
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_R3kI3TBVMhs/SNZkBlufBVI/AAAAAAAAAGU/yT-zVCdKlxE/s1600-h/Jersey14.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_R3kI3TBVMhs/SNZkBlufBVI/AAAAAAAAAGU/yT-zVCdKlxE/s400/Jersey14.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248492394216621394" /></a>
+<br /><span style="font-weight:bold;"><br />Step 12.</span> The resource class looks like shown below.
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_R3kI3TBVMhs/SNZkZhm11VI/AAAAAAAAAGc/FG0g6MBe12M/s1600-h/Jersey15.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_R3kI3TBVMhs/SNZkZhm11VI/AAAAAAAAAGc/FG0g6MBe12M/s400/Jersey15.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248492805427680594" /></a>
+<br />
+<br />Nothing fancy in the above class, its accessing the persistence unit to retrieve the data from db in the method getTest(). The catch are the annotations the @GET , @ProduceMime("text/plain") and @Path("/person/");
+<br />
+<br /><span style="font-weight:bold;">Step 13.</span> Access the data through the URL (http://localhost:8080/restMaven/person/ ) after clean and build and deploying on the server. Mine looked as below
+<br />
+<br />
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZluZC3lKI/AAAAAAAAAGk/LJIiFFc_rig/s1600-h/Jersey16.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_R3kI3TBVMhs/SNZluZC3lKI/AAAAAAAAAGk/LJIiFFc_rig/s400/Jersey16.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5248494263418197154" /></a>
+<br />
+<br /><span style="font-weight:bold;">Conclusion: </span> In this example i just sticked to html output maybe in my next post i will try to get the xml output and also may be generating the URIs for accessing the resource as done by the netbeans restful wizard.

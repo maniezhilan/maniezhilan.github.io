@@ -1,0 +1,112 @@
+---
+layout: post
+title: Custom authentication - Active Directory credentials using spring security
+  2.0
+date: '2009-02-05T09:59:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- spring security
+modified_time: '2012-09-02T00:44:59.227-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-9195089545715598785
+blogger_orig_url: http://maniezhilan.blogspot.com/2009/02/custom-authentication-using-spring.html
+---
+
+Last week IncorrectResultSizeDataAccessException showed up during login process of one of our application, which uses spring security authentication approach(discussed earlier in this <a href="http://maniezhilan.blogspot.com/2008/10/spring-security-204-with-active.html">blog posting</a>) .
+The error is result of more than one sAMAccountName returned by active directory.
+This is possible because of the same sAMAccountName present in different domain.
+
+For example hsimpson is unique sAMAccountName under domain SALES , sAMAccountName by hsimpson can also be under different domain called IT. In this case, when one of these hsimpson login , "yoink" the IncorrectResultSizeDataAccessException shows up.
+
+Easy solution to this problem is, make the user login with domainName\sAMAccountName (example SALES\hsimpson or IT\hsimpson).
+
+In order to make the above mentioned work, i have to write a custom LdapAuthenticationProvider class , thanks to this <a href="http://stackoverflow.com/questions/84680/how-do-you-authenticate-against-an-active-directory-server-using-spring-security">post</a>.
+
+The modifications i did from this <a href="http://stackoverflow.com/questions/84680/how-do-you-authenticate-against-an-active-directory-server-using-spring-security">post</a> are ,
+
+Step 1.
+I removed the &lt;property name="principalPrefix" value="SALES\" /&gt; from applicationContext-security.xml. Since i want both hsimpson from SALES and IT able to login. If i had the above it defaults to domain "SALES" and no need of adding SALES\ while logging in.
+Step 2.
+Since my use case allows both hsimpson from SALES and IT able to login as SALES\hsimpson or IT\hsimpson, i had to tweak the LdapAuthenticatorImpl class using string tokenizer as shown below
+
+{% highlight java %}
+public class LdapAuthenticatorImpl implements LdapAuthenticator {
+private DefaultSpringSecurityContextSource contextFactory;
+private String principalPrefix = "";
+public DirContextOperations authenticate(Authentication authentication) {
+// Grab the username and password out of the authentication object.
+StringTokenizer st = new StringTokenizer(authentication.getName(),"\\");
+while(st.hasMoreTokens())
+{
+	principalPrefix = st.nextToken();
+}
+String principal = authentication.getName();
+String password = "";
+if (authentication.getCredentials() != null) {
+	password = authentication.getCredentials().toString();
+}
+// If we have a valid username and password, try to authenticate.
+if (!("".equals(principal.trim())) && !("".equals(password.trim()))) {
+InitialLdapContext ldapContext = (InitialLdapContext) contextFactory.getReadWriteContext(principal, password);
+// We need to pass the context back out, so that the auth provider can add it to the
+// Authentication object.
+DirContextOperations authAdapter = new DirContextAdapter();
+authAdapter.addAttributeValue("ldapContext", ldapContext);return authAdapter;
+} else {
+throw new BadCredentialsException("Blank username and/or password!");
+}
+}
+{% endhighlight %}
+
+Sample custom login page
+
+{% highlight html %}
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<form action="${pageContext.request.contextPath}/customloginAD/j_spring_security_check" method="post">
+    <table width="400px" cellspacing="5" cellpadding="5" style="padding:1em; background-color:#EEEEEE; border:silver;border-width:.2em; border-style:solid;">
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><b>Please Login To The System</b></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="right">UserID:</td>
+            <td>
+                <input type="text" name="j_username" size="15" />
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="right">Password:</td>
+            <td>
+                <input type="password" name="j_password" size="15" />
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <center>
+                    <input type="submit" value="Login">
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</form>
+
+{% endhighlight %}
+maven project source code can be downloaded <a href="http://maniezhilan.googlepages.com/customloginAD.zip">here</a>
+
+
+In my next post i will explain about single-sign-on using JOSSO with LDAP
+
+

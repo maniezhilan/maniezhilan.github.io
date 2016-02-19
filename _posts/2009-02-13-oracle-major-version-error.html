@@ -1,0 +1,13 @@
+---
+layout: post
+title: oracle major version error
+date: '2009-02-13T13:48:00.001-06:00'
+author: Maniezhilan shanmugam
+tags:
+- hibernate
+modified_time: '2012-09-01T20:11:12.532-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-8652011074625108564
+blogger_orig_url: http://maniezhilan.blogspot.com/2009/02/oracle-major-version-error.html
+---
+
+<script src="http://crux-framework-tools.googlecode.com/svn/trunk/misc/highlight/highlightLoader.js">type='text/javascript' </script>I got the below error message when i use JPA with oracle 11g.<br /><br />javax.persistence.PersistenceException: org.hibernate.HibernateException: unknown Oracle major version [11]<br /><br />The fix for the error is add<br /><br /><pre class='brush:xml'><br />&lt;property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/&gt<br /><br /></pre><br />in your persistence.xml<br /><br /><b>Updated:</b>Thanks to <b>Saranga</b> and <b>Ben</b></br>Before: <pre class='brush:xml'><br /><bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" ><br /><property name="persistenceUnitName" value="JPA"/><br /><property name="persistenceXmlLocation" value="classpath:persistence.xml" /><br /><br /><property name="jpaVendorAdapter"><br /><bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"><br /><property name="showSql" value="false" /><br /></bean><br /></property> <br /></bean> <br /></pre>After: <pre class='brush:xml'><br /><bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" ><br /><property name="persistenceUnitName" value="JPA"/><br /><property name="persistenceXmlLocation" value="classpath:persistence.xml" /><br /><br /><property name="jpaVendorAdapter"><br /><bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"><br /><property name="showSql" value="false" /><br /><property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" /><br /></bean><br /></property> <br /></bean><br /></pre>

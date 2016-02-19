@@ -1,0 +1,48 @@
+---
+layout: post
+title: Seam example seam-blog using mysql
+date: '2008-02-04T19:25:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- seam
+modified_time: '2012-09-01T19:56:38.227-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-3118859299933617817
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/02/seam-example-seam-blog-using-mysql.html
+---
+
+1. Installed mysql and created DB.
+
+2. For the mysql to work with jboss , downloaded the Connector/J from mysql website and copied the file  mysql-connector-java-3.0.15-ga-bin.jar to the lib folder under server default.
+
+3.Jboss server will bitch about the no class def found error <a href="http://forums.mysql.com/read.php?39,22579,22579#msg-22579">java.lang.NoClassDefFoundError: org/aspectj/lang/Signature</a> , to solve this add the aspectrt.jar which is availale in the connector/J download.
+
+4.Now we have to create datasource for mysql , copy the sample mysql-ds.xml from examples and change it as follows
+{% highlight xml %}
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>MySqlDS</jndi-name>
+		<connection-url>jdbc:mysql://localhost:3306/jboss</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<user-name>jboss</user-name>
+		<password>password</password>
+	</local-tx-datasource>
+</datasources>
+{% endhighlight %}
+
+5.Change the blog-ds.xml under jboss-seam/examples/blog/resource as follows
+{% highlight xml %}
+<datasources>
+    <local-tx-datasource>
+        <jndi-name>blogDatasource</jndi-name>
+        <connection-url>jdbc:mysql:localhost:3306:jboss</connection-url>
+        <driver-class>com.mysql.jdbc.Driver</driver-class>
+        <user-name>jboss</user-name>
+        <password>pass</password>
+    </local-tx-datasource>
+</datasources>
+{% endhighlight %}
+
+6.Add the jndi name of datasource to the persistence.xml under jboss-seam/examples/blog/resources/META-
+INF folder<jta-data-source>java:/MySqlDS</jta-data-source>
+
+7.Run ant deploy under jboss-seam/examples/blog/

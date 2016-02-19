@@ -1,0 +1,21 @@
+---
+layout: post
+title: Potpourri - Weblogic portal 10.0 CMS integration with Spring Hibernate Struts
+date: '2008-01-23T15:11:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- weblogic portal
+modified_time: '2010-01-13T21:35:51.084-06:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-376602865121765623
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/01/potpourri-weblogic-portal100-cms-spring.html
+---
+
+I am working on poc with Weblogic portal and its built in Content management system with open source frameworks spring , struts 1.2 (i dont know if wlp 10.0 is going to support struts 2) , hibernate3. I use the CMS for storing all the (language specific) images and displaying it on the website using the
+<ad:adtarget> tag : example usage : add this tag lib at the top of your jsp
+    <%@taglib uri="http://www.bea.com/servers/portal/tags/ad" prefix="ad"%>
+        <ad:adtarget query="image_name == 'some image name' &amp;&amp; locale == requestProperty('DefaultRequestPropertySet', 'Locale')" width="76" height="50">
+            <jsp tag to display image based on users locale <ad:adtarget query="image_name == 'some_image ' &amp;&amp; locale == requestProperty('DefaultRequestPropertySet', 'Locale')" width="76" height="50">
+                <ad:adTarget query="image_name == 'some image' &amp;&amp; locale == requestProperty('DefaultRequestPropertySet', 'Locale')" The best part in this is it detects the default user locale from the browser and sets it. Note: While adding the image into repository make sure add the locale as property and add the locale value as "en_US" for US or "ja" for JAPAN. The reason why i chose weblogic portal CMS instead of apache (which is where we store currently), the workflow involved in it and the amount of content moved in and moved out on day to day basis , the display of language specific image and contents and the dirty hacks to point to different img paths based on locale , CMS helps in all of the above with nice easy jsp tags. </ad:adtarget>
+                </ad:adtarget>
+        </ad:adtarget>
+

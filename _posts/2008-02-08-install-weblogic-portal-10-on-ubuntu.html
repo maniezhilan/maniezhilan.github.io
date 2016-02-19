@@ -1,0 +1,13 @@
+---
+layout: post
+title: Install Weblogic Portal 10 on Ubuntu
+date: '2008-02-08T12:39:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- ubuntu
+modified_time: '2010-01-13T21:34:28.277-06:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-1323719814896266527
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/02/install-weblogic-portal-10-on-ubuntu.html
+---
+
+I was trying to install the weblogic portal on leopard mac osx  , i was able to start server and create the portal domains , but had no luck on the weblogic workshop IDE. So i thought of ubuntu and did the following to install.<br />1. I downloaded the portal1001_linux32.bin from the bea downloads the HPUX version<br />2. mkdir bea_portal<br />3.cp  portal1001_linux32.bin  to bea_portal<br />4.cd into bea_portal<br />5.chmod +x portal1001_linux32.bin<br />6.run ./portal1001_linux32.bin<br />5.cat AUTORUN.inf<br />6.run anyone of the  cmd line  eg for gui<br />java -mx256 -cp installer.jar com.bea.plateng.wizard.WizardController mode=gui<br />7.Installer will guide your from there on.<br /><br />Workshop can be launched from /home/mani/bea_portal/workshop_10.0/workshop4WP<br /><br />Trust me its lightning fast on macbook pro and ubuntu.

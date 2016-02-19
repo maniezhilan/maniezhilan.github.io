@@ -1,0 +1,38 @@
+---
+layout: post
+title: Seam Framework - ManyToMany relationship in JPA using join table example
+date: '2008-11-29T21:49:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- seam
+modified_time: '2012-09-01T19:39:28.943-05:00'
+thumbnail: http://2.bp.blogspot.com/_R3kI3TBVMhs/STK_zEnxzPI/AAAAAAAAAHE/EiNFGDyf4gg/s72-c/manytomany.jpg
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-3273867060751105594
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/11/seam-framework-manytomany-relationship.html
+---
+
+In my recent project i have to create a user who can be assigned multiple roles. The class structure looks as follows.
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_R3kI3TBVMhs/STK_zEnxzPI/AAAAAAAAAHE/EiNFGDyf4gg/s1600-h/manytomany.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 391px; height: 400px;" src="http://2.bp.blogspot.com/_R3kI3TBVMhs/STK_zEnxzPI/AAAAAAAAAHE/EiNFGDyf4gg/s400/manytomany.jpg" border="0" alt="" id="BLOGGER_PHOTO_ID_5274488997739089138" /></a>In my UserAccount class the @ManyToMany relationship looks like as follows,
+{% highlight java %}
+@ManyToMany@JoinTable(name="USER_ROLE",joinColumns=@JoinColumn(name="USER_NAME",referencedColumnName="USER_NAME"),inverseJoinColumns=@JoinColumn(name="SITE_ROLE_ID",referencedColumnName="ID"))
+private List<siterole> userRoles=new Vector();
+public UserAccount() {}
+{% endhighlight %}
+In SiteRole class the @ManyToMany relationship looks like as follows,
+{% highlight java %}
+@ManyToMany@JoinTable(name="USER_ROLE",joinColumns=@JoinColumn(name="SITE_ROLE_ID",referencedColumnName="ID"),inverseJoinColumns=@JoinColumn(name="USER_NAME",referencedColumnName="USER_NAME"))
+private List<useraccount> users =new Vector();
+{% endhighlight %}
+In the UserRole (mapped to join table) attributes are as follows,
+{% highlight java %}
+@EmbeddedIdprotected UserRolePK userRolePK;
+@JoinColumn(name = "SITE_ROLE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+@ManyToOneprivate SiteRole siteRole;
+@JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", insertable = false, updatable = false)
+@ManyToOneprivate UserAccount userAccount;
+{% endhighlight %}
+The UserRolePK class attributes are as follows
+{% highlight java %}
+@Embeddablepublic class UserRolePK implements Serializable {@Column(name = "SITE_ROLE_ID", nullable = false)private long siteRoleId;@Column(name = "USER_NAME")private String userName;
+{% endhighlight %}
+The UserRolePK class is needed as the UserRole table has composite key ( remember ?? the ejb days writing the PKClass).Hmm..the title goes like Seam Framework ...., what seam has anything to do with this?Well seam makes the user creation with multiple roles easy using seam tags like <span style="font-weight:bold;">selectManyCheckboxes</span> as explained <a href="http://maniezhilan.blogspot.com/2008/11/seam-framework-cheat-sheets-3.html">here</a>.Moreover <span style="font-weight:bold;">jpaidentitystore</span> in seam framework helps in declaring the user-class and role-class inside of components class as explained <a href="  http://docs.jboss.com/seam/latest/reference/en-US/html/security.html#d0e8839">here</a>.

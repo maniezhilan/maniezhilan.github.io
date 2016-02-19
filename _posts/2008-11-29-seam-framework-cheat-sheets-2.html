@@ -1,0 +1,67 @@
+---
+layout: post
+title: Seam framework Cheat Sheets 2. SelectOneMenu example
+date: '2008-11-29T18:46:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- seam
+modified_time: '2012-09-01T19:52:15.249-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-5483233818156786081
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/11/seam-framework-cheat-sheets-2.html
+---
+
+<span style="font-weight:bold;">Example usage of SelectOneMenu </span>
+In this example i want to use selectOneMenu to select a country from list of countries and save the country code for the user in USER_ACCOUNT table.
+{% highlight html %}
+<h:selectOneMenu id="country" value="#{userForm.countryCode}" require="true">
+	<s:selectItems value="#{countries.list}" var="country" label="#{country.countryName}"/>
+	<s:convertEntity/>
+</h:selectOneMenu>
+{% endhighlight %}
+
+In the above code "userForm.countryCode" refers to model "UserForm" with property countryCode,  The helper class to load countries list is as follows , the scope is application as the countries and their code doesn't change.
+ {% highlight java %}
+ @Name("countries")@Scope(ScopeType.APPLICATION)
+ public class CountriesList {
+ 	@Outprivate List<country> list;
+ 	@In(create=true)  EntityManager entityManager;
+ 	@Factory("countriesList")
+ 	public List<country> getList() {
+	 	Query query=entityManager.createNamedQuery("Country.findAll");
+	 	list=query.getResultList();
+	 	return list;
+ 	}
+ 	public void setCountriesList(List<country> list) {
+ 		this.list = list;
+ 	}
+ }
+ {% endhighlight %}
+ Entity class Country is as follows,
+ {% highlight java %}
+ @Entity@Name("country")@Table(name = "COUNTRY")
+ @NamedQueries({@NamedQuery(name = "Country.findAll", query = "SELECT c FROM Country c ORDER BY c.countryName"), @NamedQuery(name = "Country.findByCountryCode", query = "SELECT c FROM Country c WHERE c.countryCode = :countryCode"), @NamedQuery(name = "Country.findByCountryName", query = "SELECT c FROM Country c WHERE c.countryName = :countryName")})
+ public class Country extends Model implements Serializable {private static final long serialVersionUID = 1L;
+ @Id@Column(name = "COUNTRY_CODE", nullable = false)
+ private String countryCode;@Column(name = "COUNTRY_NAME", nullable = false)
+ private String countryName;
+ public Country() {}
+ public Country(String countryCode) {
+ 	this.countryCode = countryCode;
+ }
+ public Country(String countryCode, String countryName) {
+ 	this.countryCode = countryCode;
+ 	this.countryName = countryName;
+ }
+ public String getCountryCode() {
+ 	return countryCode;
+ }
+ public void setCountryCode(String countryCode) {
+ 	this.countryCode = countryCode;
+ }
+ public String getCountryName() {
+ 	return countryName;
+ }public void setCountryName(String countryName) {
+ 	this.countryName = countryName;
+ 	}
+ }
+ {% endhighlight %}

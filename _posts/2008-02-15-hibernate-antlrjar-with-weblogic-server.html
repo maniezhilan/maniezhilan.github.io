@@ -1,0 +1,13 @@
+---
+layout: post
+title: hibernate antlr.jar with weblogic server
+date: '2008-02-15T07:42:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- hibernate
+modified_time: '2010-01-13T18:48:54.591-06:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-8364927722085615874
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/02/hibernate-antlrjar-with-weblogic-server.html
+---
+
+In weblogic 10 server , if you run hibernate applications you will be annoyed to see this error<br />org.hibernate.QueryException: ClassNotFoundException: org.hibernate.hql.ast.HqlToken<br /><br />the solution is to tell the server to use the antlr.jar in your lib directory instead of servers antlr.<br />You can do it by placing the antlr.jar in classpath.<br /><br />add this to your startweblogic.cmd  change path to wherever your antlr is<br />set PRE_CLASSPATH=C:\bea_portal\user_projects\w4WP_workspaces\poc1.0\poc2.0WAR\WebContent\WEB-INF\lib\antlr-2.7.5H3.jar;<br /><br /><br />and also add<br /><br />set CLASSPATH=%PRE_CLASSPATH%;%SAVE_CLASSPATH%<br /><br />You will be good to go

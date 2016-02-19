@@ -1,0 +1,39 @@
+---
+layout: post
+title: Seam framework Cheat Sheets 3. selectManyCheckbox example
+date: '2008-11-29T20:55:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- seam
+modified_time: '2012-09-01T19:51:27.085-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-4668313119452394421
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/11/seam-framework-cheat-sheets-3.html
+---
+
+<span style="font-weight:bold;">Example usage of selectManyCheckBox</span>In this example i want to create selectManyCheckbox in order to assign a user with multiple roles. The example code is as follows
+{% highlight html %}
+<h:selectManyCheckbox id="groups" value="#{userAccount.userRoles}" layout="pageDirection"><s:selectItems value="#{rolesListing.roles}" var="role" label="#{role.roleName}"/><s:convertEntity/></h:selectManyCheckbox>
+{% endhighlight %}
+In the above example "userAccount.userRoles" is the form value (users associated roles) and the rolesListing.roles is bunch of roleids and rolename from  entity named SiteRole.The helper class RolesListing is as follows
+{% highlight java %}
+@Name("rolesListing")@Scope(ScopeType.APPLICATION)
+public class RolesListing {
+@In(create=true)  EntityManager entityManager;
+@Outprivate List<siterole> roles;
+@Factory("roles")
+public List<siterole> getRoles(){
+	roles=  entityManager.createNamedQuery("SiteRole.findRoles").getResultList();
+	return roles;
+}
+public void setRoles(List<siterole> roles){
+	this.roles = roles;
+}
+}
+{% endhighlight %}
+<span style="font-weight:bold;">Important things to make sure, this seam tag work are</span>
+
+a) Make sure the #{userAccount.userRoles} and #{rolesListing.roles} are of same type for example i made both of them as List. If they are different type, you will encounter "Conversion Error setting value".
+
+b) Make sure the <s:convertEntity/> tag is applied at the right location as shown in the example.
+
+c) In my <a href="http://maniezhilan.blogspot.com/2008/11/seam-framework-manytomany-relationship.html">next post</a> i will explain the @ManyToMany relationship between userAccount entity and Roles entity using a USER_ROLE join table.

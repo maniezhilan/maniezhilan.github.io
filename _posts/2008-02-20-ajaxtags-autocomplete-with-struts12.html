@@ -1,0 +1,118 @@
+---
+layout: post
+title: Ajaxtags autocomplete with struts1.2 spring jpa & hibernate
+date: '2008-02-20T08:59:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- ajaxtags
+modified_time: '2012-09-02T00:58:02.570-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-5232091853893693025
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/02/ajaxtags-autocomplete-with-struts12.html
+---
+
+I wanted to use struts2 with weblogic portal 10 for its cool dojo built in, but BEA havent kept pace with struts open source community(only way you can use struts2 in portal ,  is as uri portlet). So i was trying to figure out a way to do things similar to dojo autocomplete , i luckily found in some blogs about AJAXTAGS which uses scriptaculous and prototype javascripts.
+
+1. The chosen technologies where Struts1.2 , Spring , JPA , Hibernate ,  ajaxtags  ,  scriptaculous and prototype.1.Download ajaxtags from <a href="http://ajaxtags.sourceforge.net/">http://ajaxtags.sourceforge.net/</a>
+
+2. Add the jars downloaded to web-inf lib and add the following to your web.xml for ajaxtags to work
+
+{% highlight xml %}
+<jsp-config>
+    <taglib>
+        <taglib-uri>http://ajaxtags.org/tags/ajax</taglib-uri>
+        <taglib-location>/WEB-INF/ajaxtags.tld</taglib-location>
+    </taglib>
+</jsp-config>
+{% endhighlight %}
+
+3.Import all the required libraries for spring jpa and struts to work.
+
+4. Add these in web.xml
+{% highlight xml %}
+<filter>
+    <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
+    <filter-class>
+        org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+    </filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+<listener>
+    <listener-class>
+        org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+</listener>
+{% endhighlight %}
+
+5. Add  the bean class  in applicationContext.xml
+
+{% highlight xml %}
+<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+{% endhighlight %}
+
+6. Add the entitymanagerfactory in applicationContext.xml
+{% highlight xml %}
+<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+<property name="dataSource" ref="dataSource" />
+<property name="jpaVendorAdapter">
+    <beanclass="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    <property name="database" value="MYSQL" />
+    <property name="showSql" value="true" />
+    </bean>
+</property>
+</bean>
+{% endhighlight %}
+
+7. Add the datasource to applicationContext.xml
+<{% highlight xml %}
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+	<property name="url" value="jdbc:mysql://localhost/test" />
+	<property name="username" value="bobsmith" />
+	<property name="password" value="bobsmith" />
+</bean>
+
+{% endhighlight %}
+
+8.Add the transactionmanager to applicationContext.xml
+
+{% highlight xml %}
+<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+<property name="entityManagerFactory" ref="entityManagerFactory" />
+</bean>
+<tx:annotation-driven transaction-manager="transactionManager" />
+{% endhighlight %}
+
+9. Write the  pojo , service and serviceimpl  lets  have a  Users  pojo ,  UsersService and UsersServiceImpl10.Write the UsersAction class and extend the BaseAjaxAction (SOURCE is included in download code for this tutorial or download the earlier 1.2 version of ajaxtags-src). In the action access user service layer to get list of users and pass it into the method call getXMLContent.11.Wire your action and service in applicationContext.xml as follows
+
+{% highlight xml %}
+<bean name="/users" class="UsersAction">
+	<property name="UsersService">
+	    <ref bean="UsersService" />
+	</property>
+</bean>
+{% endhighlight %}
+
+12. Add this in your struts-config.xml
+
+{% highlight xml %}
+<action-mappings>
+    <action path="/users" type="org.springframework.web.struts.DelegatingActionProxy">
+    <forward name="success" path="/username.jsp"></forward>
+    </action>
+</action-mappings>
+<plug-inclassName="org.springframework.web.struts.ContextLoaderPlugIn">
+<set-property property="contextConfigLocation" value="/WEB-INF/applicationContext.xml" />
+</plug-in>
+
+
+{% endhighlight %}
+
+13. Write a autocomplete.jsp and use the ajax:autocomplete tag as follows
+
+{% highlight xml %}
+<ajax:autocompletesource="username"target="username"baseUrl="${contextPath}/users.do"className="autocomplete"indicator="throbbing"minimumCharacters="1"/>
+{% endhighlight %}

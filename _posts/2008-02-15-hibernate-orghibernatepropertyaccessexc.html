@@ -1,0 +1,13 @@
+---
+layout: post
+title: Hibernate org.hibernate.PropertyAccessException
+date: '2008-02-15T08:53:00.000-06:00'
+author: Maniezhilan shanmugam
+tags:
+- hibernate
+modified_time: '2010-01-13T21:33:10.462-06:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-6991662560875847419
+blogger_orig_url: http://maniezhilan.blogspot.com/2008/02/hibernate-orghibernatepropertyaccessexc.html
+---
+
+org.hibernate.PropertyAccessException: could not set a field value by reflection setter<br /><br />The reason for the exception is ,<br /><br />i used primitive long datatype   for an database column which can take null, so my primitive long cannot store null value.<br /><br />Solution<br />Changed it to Long .<br /><br />problem solved.

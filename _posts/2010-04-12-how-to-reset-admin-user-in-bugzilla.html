@@ -1,0 +1,13 @@
+---
+layout: post
+title: How to reset admin user in Bugzilla
+date: '2010-04-12T08:42:00.000-05:00'
+author: Maniezhilan shanmugam
+tags:
+- bugzilla admin password lostrd
+modified_time: '2010-04-12T08:42:45.782-05:00'
+blogger_id: tag:blogger.com,1999:blog-5289317672382806955.post-3651067732478793864
+blogger_orig_url: http://maniezhilan.blogspot.com/2010/04/how-to-reset-admin-user-in-bugzilla.html
+---
+
+I lost the admin password for bugzilla, but i had a test user with no admin privileges.<br />Following query enabled me to set the test user into admin. Run these queries in bugzilla's mysql DB. <br /><br />1. SELECT @myusr := userid FROM profiles WHERE login_name="your email here"; <br />2. SELECT @admin := id FROM groups WHERE name="admin"; <br />3. INSERT INTO user_group_map (user_id,group_id,isbless,grant_type) VALUES <br />(@myusr,@admin,0,0);
