@@ -297,4 +297,144 @@
             <div class="insight">
                 <strong>Key Observations:</strong>
                 <ul style="margin-left: 2rem; margin-top: 0.5rem;">
-                    <li><strong>Massive run-up into Sep 2025:</strong> Both stocks had significant gains, with INVZ actually
+                    <li><strong>Massive run-up into Sep 2025:</strong> Both stocks had significant gains, with INVZ actually outperforming OUST at the peak (~+601% vs ~+368%).</li>
+                    <li><strong>Sharp divergence after Sep 2025:</strong> OUST surged again in Q2 2026 (peaking near +680%) driven by revenue acceleration and analyst upgrades. INVZ collapsed and is now essentially back to flat vs Sep 2024 (~+2%).</li>
+                    <li><strong>Current positioning:</strong> OUST is up ~+449% from Sep 2024 and consolidating from its June 2026 highs. INVZ has given up almost all its gains.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Verdict</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>OUST</th>
+                            <th>INVZ</th>
+                            <th>LAZR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric-name">Revenue Scale</td>
+                            <td><span class="badge badge-good">✅ Leader</span></td>
+                            <td><span class="badge badge-bad">❌ Small</span></td>
+                            <td><span class="badge badge-warning">⚠️ N/A</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Gross Margin</td>
+                            <td><span class="badge badge-good">✅ ~49%</span></td>
+                            <td><span class="badge badge-bad">❌ ~4%</span></td>
+                            <td><span class="badge badge-warning">⚠️ N/A</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Balance Sheet</td>
+                            <td><span class="badge badge-good">✅ Cash-Rich</span></td>
+                            <td><span class="badge badge-bad">❌ At Risk</span></td>
+                            <td><span class="badge badge-warning">⚠️ N/A</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Valuation</td>
+                            <td><span class="badge badge-warning">⚠️ Expensive (20.9x P/S)</span></td>
+                            <td><span class="badge badge-good">✅ Cheap (3.2x P/S)</span></td>
+                            <td><span class="badge badge-warning">⚠️ N/A</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Price Performance</td>
+                            <td><span class="badge badge-good">✅ Strong</span></td>
+                            <td><span class="badge badge-bad">❌ Collapsed</span></td>
+                            <td><span class="badge badge-bad">❌ Defunct</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="insight">
+                <strong>Bottom Line:</strong>
+                <p style="margin-top: 0.5rem;">OUST is the standout in this peer group on virtually every operational metric. The risk is valuation — at 20.9x TTM sales, the market is pricing in continued strong execution. INVZ is a speculative distressed situation with a deteriorating balance sheet. LAZR appears to no longer be a comparable peer.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Performance chart data
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Sep 2024', 'Oct 2024', 'Nov 2024', 'Dec 2024', 'Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026'],
+                datasets: [
+                    {
+                        label: 'OUST',
+                        data: [100, 95, 102, 115, 125, 118, 135, 150, 165, 180, 195, 220, 368, 395, 420, 485, 520, 545, 580, 640, 680, 650, 620, 540, 449],
+                        borderColor: '#60a5fa',
+                        backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#60a5fa',
+                        pointBorderColor: '#fff'
+                    },
+                    {
+                        label: 'INVZ',
+                        data: [100, 98, 110, 145, 180, 220, 260, 310, 380, 450, 520, 580, 601, 520, 380, 240, 140, 95, 75, 45, 35, 25, 18, 8, 2],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#ef4444',
+                        pointBorderColor: '#fff'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#cbd5e1',
+                            font: {
+                                size: 12,
+                                weight: 500
+                            },
+                            padding: 20
+                        }
+                    },
+                    filler: {
+                        propagate: true
+                    }
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            color: 'rgba(71, 85, 105, 0.2)'
+                        },
+                        ticks: {
+                            color: '#94a3b8'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Indexed Performance (Sep 2024 = 100)',
+                            color: '#cbd5e1'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(71, 85, 105, 0.2)'
+                        },
+                        ticks: {
+                            color: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
