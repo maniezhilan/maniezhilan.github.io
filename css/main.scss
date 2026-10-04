@@ -1,6 +1,9 @@
+---
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 @charset "utf-8";
+
+
 
 // Our variables
 $base-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -25,20 +28,7 @@ $content-width:    800px;
 $on-palm:          600px;
 $on-laptop:        800px;
 
-// Analysis page variables (dark theme)
-$analysis-bg-dark:        #0f172a;
-$analysis-bg-mid:         #1e293b;
-$analysis-text-primary:   #e2e8f0;
-$analysis-text-secondary: #cbd5e1;
-$analysis-text-muted:     #94a3b8;
-$analysis-border:         #475569;
-$analysis-border-light:   #334155;
 
-$analysis-blue:           #3b82f6;
-$analysis-blue-light:     #60a5fa;
-$analysis-green:          #10b981;
-$analysis-red:            #ef4444;
-$analysis-yellow:         #f59e0b;
 
 // Use media queries like this:
 // @include media-query($on-palm) {
@@ -53,10 +43,11 @@ $analysis-yellow:         #f59e0b;
     }
 }
 
+
+
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
         "base",
         "layout",
-        "syntax-highlighting",
-        "analysis"
+        "syntax-highlighting"
 ;
