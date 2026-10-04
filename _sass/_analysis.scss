@@ -1,0 +1,197 @@
+// Analysis page styles (bull vs bear comparisons)
+
+// Dark theme body for analysis pages
+body.analysis-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    background: linear-gradient(135deg, $analysis-bg-dark 0%, $analysis-bg-mid 100%);
+    color: $analysis-text-primary;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.analysis-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.analysis-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    border-bottom: 2px solid $analysis-border;
+    padding-bottom: 2rem;
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, $analysis-blue-light 0%, $analysis-blue 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .subtitle {
+        color: $analysis-text-muted;
+        font-size: 1.1rem;
+    }
+}
+
+.analysis-section {
+    margin-bottom: 3rem;
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: $analysis-text-primary;
+        border-left: 4px solid $analysis-blue;
+        padding-left: 1rem;
+    }
+}
+
+.bull-bear-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    @include media-query($on-palm) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bull-case {
+    background: rgba($analysis-green, 0.1);
+    border-left: 4px solid $analysis-green;
+    padding: 1.5rem;
+    border-radius: 8px;
+
+    h3 {
+        color: $analysis-green;
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+    }
+}
+
+.bear-case {
+    background: rgba($analysis-red, 0.1);
+    border-left: 4px solid $analysis-red;
+    padding: 1.5rem;
+    border-radius: 8px;
+
+    h3 {
+        color: $analysis-red;
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+    }
+}
+
+ol {
+    margin-left: 1.5rem;
+
+    li {
+        margin-bottom: 1.5rem;
+        color: $analysis-text-secondary;
+
+        strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: $analysis-text-primary;
+        }
+    }
+}
+
+.analysis-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    background: rgba($analysis-bg-dark, 0.6);
+    border: 1px solid $analysis-border-light;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+
+        thead {
+            background: linear-gradient(135deg, $analysis-bg-mid 0%, $analysis-bg-dark 100%);
+            border-bottom: 2px solid $analysis-border;
+
+            th {
+                padding: 1rem;
+                text-align: left;
+                font-weight: 600;
+                color: $analysis-blue-light;
+            }
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid $analysis-border-light;
+        }
+
+        tbody tr {
+            &:hover {
+                background: rgba($analysis-blue, 0.1);
+            }
+
+            &:last-child td {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+.metric-name {
+    font-weight: 500;
+    color: $analysis-text-secondary;
+    width: 25%;
+}
+
+.positive {
+    color: $analysis-green;
+    font-weight: 500;
+}
+
+.negative {
+    color: $analysis-red;
+    font-weight: 500;
+}
+
+.neutral {
+    color: $analysis-yellow;
+    font-weight: 500;
+}
+
+.analysis-insight {
+    background: rgba($analysis-blue, 0.15);
+    border-left: 4px solid $analysis-blue;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+
+    strong {
+        color: $analysis-blue-light;
+    }
+
+    ul {
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+
+        li {
+            margin-bottom: 0.5rem;
+            color: $analysis-text-secondary;
+        }
+    }
+
+    p {
+        margin-top: 0.5rem;
+        color: $analysis-text-secondary;
+    }
+}
+
+.analysis-footnote {
+    color: $analysis-text-muted;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid $analysis-border-light;
+}
